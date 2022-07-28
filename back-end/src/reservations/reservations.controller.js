@@ -144,11 +144,15 @@ async function updateStatus(req, res, next){
 }
 
 async function list(req, res) {
-  const { date } = req.query;
+  const { date, mobile_number } = req.query;
   let data;
   if (date) {
     data = await reservationsService.listByDate(date);
-  } else {
+  }
+  else if(mobile_number){
+    data = await reservationsService.listByPhone(mobile_number);
+  }
+  else {
     data = await reservationsService.list();
   }
   res.json({

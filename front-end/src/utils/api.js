@@ -144,3 +144,4 @@ export async function finishReservation(tableId, signal) {
   };
   return await fetchJson(url, options);
 }
+

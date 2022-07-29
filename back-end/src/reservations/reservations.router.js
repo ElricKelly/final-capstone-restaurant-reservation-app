@@ -18,6 +18,7 @@ router.route("/:reservationId/seat")
     .all(methodNotAllowed);
 
 router.route("/:reservationId")
+    .put(controller.updateRes)
     .get(controller.read)
     .all(methodNotAllowed);
 

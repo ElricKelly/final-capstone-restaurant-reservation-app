@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 import SearchForm from "./SearchForm";
-import { listReservations } from "../utils/api";
+import { listReservations} from "../utils/api";
 import ReservationDisplay from "./ReservationDisplay";
 
-function SearchDisplay() {
+function SearchDisplay({date}) {
+  function loadDashboard() {
+    const abortController = new AbortController();
+    listReservations({ date }, abortController.signal)
+      .then(setReservations)
+    return () => abortController.abort();
+  }
   const initialFormState = {
     mobile_number: "",
   };
@@ -40,6 +46,7 @@ function SearchDisplay() {
                 <ReservationDisplay
                   reservation={reservation}
                   key={reservation.reservation_id}
+                  loadDashboard={loadDashboard}
                 />
               );
             })}

@@ -126,7 +126,7 @@ function validateStatus(req, res, next){
       message:`Status ${status} is incorrect.`,
     });
   }
-  if(res.locals.reservation.status != 'booked'){
+  else if(res.locals.reservation.status != 'booked'){
     next({
       status: 400,
       message:`Reservation status is ${res.locals.reservation.status}. A finished reservation cannot be updated`,
@@ -141,6 +141,12 @@ async function updateStatus(req, res, next){
   const newStatus = req.body.data.status;
   const updatedTable = await reservationsService.update(resId, newStatus);
   res.status(200).json({ data: updatedTable });
+}
+
+async function updateRes(req, res, next){
+  const newBody = req.body.data;
+  const updatedRes = await reservationsService.updateRes(newBody);
+  res.status(200).json({ data: updatedRes });
 }
 
 async function list(req, res) {
@@ -213,5 +219,10 @@ module.exports = {
     asyncErrorBoundary(reservationExists),
     validateStatus,
     asyncErrorBoundary(updateStatus)
+  ],
+  updateRes: [
+    asyncErrorBoundary(reservationExists),
+    validateReservationBody,
+    asyncErrorBoundary(updateRes)
   ]
 };

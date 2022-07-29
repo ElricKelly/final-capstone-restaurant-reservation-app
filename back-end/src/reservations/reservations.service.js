@@ -3,7 +3,7 @@ const knex = require("../db/connection");
 function list() {
   return knex("reservations")
     .select("*")
-    .whereNot({ reservation_id: "finished" });
+    .whereNot({ status: "finished" });
 }
 
 function create(reservation) {

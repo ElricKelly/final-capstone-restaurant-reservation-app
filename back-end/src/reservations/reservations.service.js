@@ -21,7 +21,6 @@ function read(reservationId) {
 }
 
 function listByDate(date) {
-  console.log(date);
   return knex("reservations")
     .where({ reservation_date: date })
     .whereNot({ status: "finished" })
@@ -45,6 +44,23 @@ function update(reservationId, newStatus) {
     .then((result) => result[0]);
 }
 
+function updateRes(reservation) {
+  const {
+      reservation_id,
+      first_name,
+      last_name,
+      mobile_number, 
+      reservation_date,
+      reservation_time,
+      people
+  } = reservation;
+  return knex("reservations")
+  .where({reservation_id})
+  .update(reservation, "*")
+  .returning("*")
+  .then((updated) => updated[0]);
+}
+
 module.exports = {
   list,
   create,
@@ -52,4 +68,5 @@ module.exports = {
   listByDate,
   update,
   listByPhone,
+  updateRes,
 };
